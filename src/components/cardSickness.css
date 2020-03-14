@@ -1,0 +1,11 @@
+.card {
+  border: 2px solid black;
+  margin: 10px;
+  max-width: 300px;
+}
+
+.card-active {
+  border: 2px solid sandybrown;
+  margin: 10px;
+  max-width: 300px;
+}
