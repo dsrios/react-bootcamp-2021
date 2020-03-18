@@ -1,11 +1,15 @@
 import React from "react";
 import { CardSickness } from "./components/CardSickness";
 import { getSicknesses } from "./api/sicknesses";
+import { login } from "./api/users";
 
 type AppState = {
   counter: number;
   sicknessState: any[];
   sicknessId: number | null;
+  username: string;
+  password: string;
+  isLogggedIn: boolean;
 };
 
 export default class AppLifeCycle extends React.Component<{}, AppState> {
@@ -15,7 +19,10 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
     this.state = {
       counter: 0,
       sicknessState: [],
-      sicknessId: null
+      sicknessId: null,
+      username: "",
+      password: "",
+      isLogggedIn: false
     };
   }
 
@@ -43,10 +50,40 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
     this.setState({ sicknessId: id });
   };
 
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    login(this.state.username, this.state.password).then(response =>
+      this.setState({ isLogggedIn: true })
+    );
+  };
+
+  handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target;
+    this.setState({ [event.target.name]: event.target.value } as any);
+  };
+
   render() {
     return (
       <React.Fragment>
-        <input type="text" value="hola" ref={this.inputRef} />
+        {!this.state.isLogggedIn && (
+          <form action="#" onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="username"
+              name="username"
+              value={this.state.username}
+              onChange={this.handleInput}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleInput}
+            />
+            <button>Login</button>
+          </form>
+        )}
         <button id="counter-button" onClick={this.setCounter}>
           Increment
         </button>
