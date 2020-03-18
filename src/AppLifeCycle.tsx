@@ -50,11 +50,16 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
     this.setState({ sicknessId: id });
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  /* handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     login(this.state.username, this.state.password).then(response =>
       this.setState({ isLogggedIn: true })
     );
+  }; */
+
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(this.inputRef.current?.value);
   };
 
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,16 +76,9 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
               type="text"
               placeholder="username"
               name="username"
-              value={this.state.username}
-              onChange={this.handleInput}
+              ref={this.inputRef}
             />
-            <input
-              type="password"
-              placeholder="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleInput}
-            />
+            <input type="password" placeholder="password" name="password" />
             <button>Login</button>
           </form>
         )}
