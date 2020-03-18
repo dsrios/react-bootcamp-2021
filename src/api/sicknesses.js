@@ -1,4 +1,2 @@
 export const getSicknesses = () =>
-  fetch("https://healthweb.free.beeceptor.com/sicknesses").then(response =>
-    response.json()
-  );
+  fetch("/sicknesses.json").then(response => response.json());
