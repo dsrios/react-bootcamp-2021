@@ -35,13 +35,13 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
           onChange={(event, tabIndex) => this.handleTabChange(tabIndex)}
           showLabels
         >
-          <BottomNavigationAction label="Login" icon={<VpnKey />} />
-          <BottomNavigationAction label="Counter" icon={<PlusOne />} />
           <BottomNavigationAction label="Sicknesses" icon={<LocalHospital />} />
+          <BottomNavigationAction label="Counter" icon={<PlusOne />} />
+          <BottomNavigationAction label="Login" icon={<VpnKey />} />
         </BottomNavigation>
-        {this.state.currentTab === 0 && <Login />}
+        {this.state.currentTab === 0 && <Sicknesses />}
         {this.state.currentTab === 1 && <Counter />}
-        {this.state.currentTab === 2 && <Sicknesses />}
+        {this.state.currentTab === 2 && <Login />}
       </React.Fragment>
     );
   }

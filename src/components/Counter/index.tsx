@@ -34,7 +34,6 @@ export class Counter extends React.Component<{}, CounterState> {
       >
         <Button onClick={this.increment}>Increment</Button>
         <Button onClick={this.decrement}>Decrement</Button>
-        <br />
         <Badge color="secondary" badgeContent={this.state.counter}>
           <MailIcon />
         </Badge>
