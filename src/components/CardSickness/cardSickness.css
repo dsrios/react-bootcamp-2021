@@ -1,5 +1,4 @@
 .card {
-  border: 2px solid black;
   margin: 10px;
   max-width: 300px;
 }
@@ -8,4 +7,8 @@
   border: 2px solid sandybrown;
   margin: 10px;
   max-width: 300px;
+}
+
+.card-media {
+  height: 140;
 }

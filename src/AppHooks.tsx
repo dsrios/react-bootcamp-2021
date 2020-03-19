@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { CardSickness } from "./components/CardSickness";
+import { CardSickness } from "./components/CardSickness/CardSickness";
 
 const sicknesses = [
   {
@@ -23,8 +23,6 @@ const sicknesses = [
 export default function AppHooks(props: any): JSX.Element {
   const [sicknessId, setSicknessId] = useState<number | null>(null);
   const [counter, setCounter] = useState<number>(0);
-  const [updated, setUpdated] = useState<boolean>(false);
-  const [mergedState, setMergedState] = useState<object | number | null>(null);
   const deleteSickness = (id: number) => {};
 
   useEffect(() => {
