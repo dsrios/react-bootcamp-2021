@@ -42,7 +42,7 @@ export const CardSickness = ({
 
   React.useEffect(() => {
     return () => {
-      console.log("Me desapareci " + name);
+      //console.log("Me desapareci " + name);
     };
   }, [name]);
 

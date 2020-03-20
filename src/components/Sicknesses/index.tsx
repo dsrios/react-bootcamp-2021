@@ -18,7 +18,7 @@ export class Sicknesses extends React.Component<{}, SicknessesState> {
   };
 
   setSicknessId = (id: number) => {
-    console.log(id);
+    //console.log(id);
     this.setState({ sicknessId: id });
   };
 
@@ -34,8 +34,6 @@ export class Sicknesses extends React.Component<{}, SicknessesState> {
   }
 
   render() {
-    const sicknesses = this.state.sicknesses.sort();
-    console.log(sicknesses);
     return (
       <Container>
         {this.state.sicknesses.map((sickness: Sickness) => (

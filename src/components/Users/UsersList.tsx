@@ -8,24 +8,29 @@ type UsersProps = {
   selectUser: (name: string) => void;
 };
 
-export default function UsersList({
-  users,
-  selectedName,
-  selectUser
-}: UsersProps): ReactElement {
-  return (
-    <List aria-label="users">
-      {users.map((name: string) => (
-        <ListItem
-          button
-          onClick={() => selectUser(name)}
-          key={name}
-          divider
-          selected={selectedName === name}
-        >
-          {name}
-        </ListItem>
-      ))}
-    </List>
-  );
+export default class UsersList extends React.Component<UsersProps> {
+  state = {
+    sortedNames: this.props.users.slice().sort()
+  };
+
+  render() {
+    const { selectedName, selectUser } = this.props;
+    const { sortedNames } = this.state;
+
+    return (
+      <List aria-label="users">
+        {sortedNames.map((name: string) => (
+          <ListItem
+            button
+            onClick={() => selectUser(name)}
+            key={name}
+            divider
+            selected={selectedName === name}
+          >
+            {name}
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
 }
