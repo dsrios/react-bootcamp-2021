@@ -34,6 +34,8 @@ export class Sicknesses extends React.Component<{}, SicknessesState> {
   }
 
   render() {
+    const sicknesses = this.state.sicknesses.sort();
+    console.log(sicknesses);
     return (
       <Container>
         {this.state.sicknesses.map((sickness: Sickness) => (
