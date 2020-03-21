@@ -1,99 +1,51 @@
 import React from "react";
-import { CardSickness } from "./components/CardSickness";
-import { getSicknesses } from "./api/sicknesses";
-import { login } from "./api/users";
+
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import VpnKey from "@material-ui/icons/VpnKey";
+import People from "@material-ui/icons/People";
+import PlusOne from "@material-ui/icons/PlusOne";
+import LocalHospital from "@material-ui/icons/LocalHospital";
+
+import { Login } from "./components/Login";
+import { Counter } from "./components/Counter";
+import { Sicknesses } from "./components/Sicknesses";
+import Users from "./components/Users";
 
 type AppState = {
-  counter: number;
-  sicknessState: any[];
-  sicknessId: number | null;
-  username: string;
-  password: string;
-  isLogggedIn: boolean;
+  currentTab: number;
 };
 
 export default class AppLifeCycle extends React.Component<{}, AppState> {
-  private inputRef = React.createRef<HTMLInputElement>();
+  //private inputRef = React.createRef<HTMLInputElement>();
   constructor(props: any) {
     super(props);
     this.state = {
-      counter: 0,
-      sicknessState: [],
-      sicknessId: null,
-      username: "",
-      password: "",
-      isLogggedIn: false
+      currentTab: 0
     };
   }
 
-  componentDidMount() {
-    getSicknesses().then(sicknesses =>
-      this.setState({ sicknessState: sicknesses })
-    );
-  }
-
-  setCounter = (
-    event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-    this.setState({ counter: this.state.counter + 1 });
-  };
-
-  deleteSickness = (id: number) => {
-    const newSicknesses = this.state.sicknessState.filter(
-      sickness => sickness.id !== id
-    );
-    this.setState({ sicknessState: newSicknesses });
-  };
-
-  setSicknessId = (id: number) => {
-    this.setState({ sicknessId: id });
-  };
-
-  /* handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    login(this.state.username, this.state.password).then(response =>
-      this.setState({ isLogggedIn: true })
-    );
-  }; */
-
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(this.inputRef.current?.value);
-  };
-
-  handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
-    this.setState({ [event.target.name]: event.target.value } as any);
+  handleTabChange = (tabIndex: number) => {
+    this.setState({ currentTab: tabIndex });
   };
 
   render() {
     return (
       <React.Fragment>
-        {!this.state.isLogggedIn && (
-          <form action="#" onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              placeholder="username"
-              name="username"
-              ref={this.inputRef}
-            />
-            <input type="password" placeholder="password" name="password" />
-            <button>Login</button>
-          </form>
-        )}
-        <button id="counter-button" onClick={this.setCounter}>
-          Increment
-        </button>
-        <label htmlFor="counter">{this.state.counter}</label>
-        {this.state.sicknessState.map(sickness => (
-          <CardSickness
-            key={sickness.id}
-            setSickness={this.setSicknessId}
-            deleteSickness={this.deleteSickness}
-            {...sickness}
-          />
-        ))}
+        <BottomNavigation
+          value={this.state.currentTab}
+          onChange={(event, tabIndex) => this.handleTabChange(tabIndex)}
+          showLabels
+        >
+          <BottomNavigationAction label="Sicknesses" icon={<LocalHospital />} />
+          <BottomNavigationAction label="Counter" icon={<PlusOne />} />
+          <BottomNavigationAction label="People" icon={<People />} />
+          <BottomNavigationAction label="Login" icon={<VpnKey />} />
+        </BottomNavigation>
+        {this.state.currentTab === 0 && <Sicknesses />}
+        {this.state.currentTab === 1 && <Counter />}
+        {this.state.currentTab === 2 && <Users />}
+        {this.state.currentTab === 3 && <Login />}
       </React.Fragment>
     );
   }
