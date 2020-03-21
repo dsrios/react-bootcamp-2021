@@ -1,15 +1,22 @@
 import React from "react";
 
+//import withAuth from "../../enhancers/withAuth";
+import AuthProvider from "../../enhancers/AuthProvider";
+
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 
 import UsersList from "./UsersList";
 
-export interface IUsersProps {}
+export interface IUsersProps {
+  email: string;
+  password: string;
+}
 
 export interface IUsersState {
   users: string[];
   selectedName: string | null;
+  name: string;
 }
 
 const USERS = [
@@ -53,12 +60,13 @@ const USERS = [
   "Paul"
 ];
 
-export default class Users extends React.Component<IUsersProps, IUsersState> {
+class Users extends React.Component<IUsersProps, IUsersState> {
   constructor(props: IUsersProps) {
     super(props);
     this.state = {
       users: USERS,
-      selectedName: null
+      selectedName: null,
+      name: ""
     };
   }
 
@@ -66,13 +74,33 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     this.setState({ selectedName: name });
   };
 
+  handleSubmit = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    this.setState({ users: [...this.state.users, this.state.name] });
+  };
+
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ name: e.target.value });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <form>
-          <Input placeholder="name"></Input>
-          <Button>Add</Button>
-        </form>
+        <AuthProvider email={this.props.email} password={this.props.password}>
+          {({ isLoggedIn, token }) => {
+            return (
+              isLoggedIn && (
+                <form>
+                  <span>{token}</span>
+                  <Input
+                    onChange={this.handleChange}
+                    placeholder="name"
+                  ></Input>
+                  <Button onClick={this.handleSubmit}>Add</Button>
+                </form>
+              )
+            );
+          }}
+        </AuthProvider>
         <UsersList
           users={this.state.users}
           selectUser={this.selectUser}
@@ -82,3 +110,5 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     );
   }
 }
+
+export default Users;

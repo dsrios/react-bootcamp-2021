@@ -44,7 +44,9 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
         </BottomNavigation>
         {this.state.currentTab === 0 && <Sicknesses />}
         {this.state.currentTab === 1 && <Counter />}
-        {this.state.currentTab === 2 && <Users />}
+        {this.state.currentTab === 2 && (
+          <Users email="eve.holt@reqres.in" password="cityslicka" />
+        )}
         {this.state.currentTab === 3 && <Login />}
       </React.Fragment>
     );
