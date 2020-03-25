@@ -1,16 +1,19 @@
 import React from "react";
+import { connect } from "react-redux";
 
 //import withAuth from "../../enhancers/withAuth";
-import AuthProvider from "../../enhancers/AuthProvider";
+//import AuthProvider from "../../enhancers/AuthProvider";
+import { MyContext } from "../../enhancers/AuthContext";
 
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 
 import UsersList from "./UsersList";
 
+import { RootState } from "../../reducers";
+
 export interface IUsersProps {
-  email: string;
-  password: string;
+  users: string[];
 }
 
 export interface IUsersState {
@@ -19,52 +22,11 @@ export interface IUsersState {
   name: string;
 }
 
-const USERS = [
-  "Michael",
-  "Lindsay",
-  "Tobias",
-  "Byron",
-  "Rachel",
-  "Daniel",
-  "Adam",
-  "Alex",
-  "Aaron",
-  "Ben",
-  "Carl",
-  "Dan",
-  "David",
-  "Edward",
-  "Fred",
-  "Frank",
-  "George",
-  "Peter",
-  "Roger",
-  "Victor",
-  "Walter",
-  "Hal",
-  "Hank",
-  "Ike",
-  "John",
-  "Monte",
-  "Jack",
-  "Joe",
-  "Larry",
-  "Matthew",
-  "Steve",
-  "Thomas",
-  "Tim",
-  "Ty",
-  "Mark",
-  "Nathan",
-  "Otto",
-  "Paul"
-];
-
 class Users extends React.Component<IUsersProps, IUsersState> {
   constructor(props: IUsersProps) {
     super(props);
     this.state = {
-      users: USERS,
+      users: this.props.users,
       selectedName: null,
       name: ""
     };
@@ -85,7 +47,7 @@ class Users extends React.Component<IUsersProps, IUsersState> {
   render() {
     return (
       <React.Fragment>
-        <AuthProvider email={this.props.email} password={this.props.password}>
+        <MyContext.Consumer>
           {({ isLoggedIn, token }) => {
             return (
               isLoggedIn && (
@@ -100,7 +62,7 @@ class Users extends React.Component<IUsersProps, IUsersState> {
               )
             );
           }}
-        </AuthProvider>
+        </MyContext.Consumer>
         <UsersList
           users={this.state.users}
           selectUser={this.selectUser}
@@ -111,4 +73,8 @@ class Users extends React.Component<IUsersProps, IUsersState> {
   }
 }
 
-export default Users;
+const mapStateToProps = (state: RootState) => {
+  return { users: state.users };
+};
+
+export default connect(mapStateToProps)(Users);

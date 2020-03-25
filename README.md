@@ -1,6 +1,6 @@
 # Challenge
 
-## Crear una applicación web orienta al sector salud que contenga los siguientes módulos:
+## Crear una applicación web orientada al sector salud que contenga los siguientes módulos
 
 • Un módulo de Login/Autenticación para los usuarios.
 • Un módulo de registro de usuarios.
