@@ -1,5 +1,7 @@
+import axios from "axios";
+
 export const login = (email: string, password: string) =>
-  fetch("https://reqres.in/api/login", {
-    method: "POST",
-    body: JSON.stringify({ email, password })
-  }).then(response => response.json());
+  axios.post<{ token: string }>("https://reqres.in/api/login", {
+    email,
+    password
+  });

@@ -1,64 +1,34 @@
 import React from "react";
+import { connect } from "react-redux";
+
+//import withAuth from "../../enhancers/withAuth";
+//import AuthProvider from "../../enhancers/AuthProvider";
+import { MyContext } from "../../enhancers/AuthContext";
 
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 
 import UsersList from "./UsersList";
 
-export interface IUsersProps {}
+import { RootState } from "../../reducers";
+
+export interface IUsersProps {
+  users: string[];
+}
 
 export interface IUsersState {
   users: string[];
   selectedName: string | null;
+  name: string;
 }
 
-const USERS = [
-  "Michael",
-  "Lindsay",
-  "Tobias",
-  "Byron",
-  "Rachel",
-  "Daniel",
-  "Adam",
-  "Alex",
-  "Aaron",
-  "Ben",
-  "Carl",
-  "Dan",
-  "David",
-  "Edward",
-  "Fred",
-  "Frank",
-  "George",
-  "Peter",
-  "Roger",
-  "Victor",
-  "Walter",
-  "Hal",
-  "Hank",
-  "Ike",
-  "John",
-  "Monte",
-  "Jack",
-  "Joe",
-  "Larry",
-  "Matthew",
-  "Steve",
-  "Thomas",
-  "Tim",
-  "Ty",
-  "Mark",
-  "Nathan",
-  "Otto",
-  "Paul"
-];
-
-export default class Users extends React.Component<IUsersProps, IUsersState> {
+class Users extends React.Component<IUsersProps, IUsersState> {
   constructor(props: IUsersProps) {
     super(props);
     this.state = {
-      users: USERS,
-      selectedName: null
+      users: this.props.users,
+      selectedName: null,
+      name: ""
     };
   }
 
@@ -66,13 +36,33 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     this.setState({ selectedName: name });
   };
 
+  handleSubmit = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    this.setState({ users: [...this.state.users, this.state.name] });
+  };
+
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ name: e.target.value });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <form>
-          <Input placeholder="name"></Input>
-          <Button>Add</Button>
-        </form>
+        <MyContext.Consumer>
+          {({ isLoggedIn, token }) => {
+            return (
+              isLoggedIn && (
+                <form>
+                  <span>{token}</span>
+                  <Input
+                    onChange={this.handleChange}
+                    placeholder="name"
+                  ></Input>
+                  <Button onClick={this.handleSubmit}>Add</Button>
+                </form>
+              )
+            );
+          }}
+        </MyContext.Consumer>
         <UsersList
           users={this.state.users}
           selectUser={this.selectUser}
@@ -82,3 +72,9 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     );
   }
 }
+
+const mapStateToProps = (state: RootState) => {
+  return { users: state.users };
+};
+
+export default connect(mapStateToProps)(Users);
