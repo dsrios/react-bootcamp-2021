@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addUser, getUsers, UserType, addUserAction } from "../../actions/index";
 
 //import withAuth from "../../enhancers/withAuth";
 //import AuthProvider from "../../enhancers/AuthProvider";
@@ -14,10 +16,12 @@ import { RootState } from "../../reducers";
 
 export interface IUsersProps {
   users: string[];
+  addUser: (user: UserType) => void
+  getUsers: typeof getUsers;
 }
 
 export interface IUsersState {
-  users: string[];
+  //users: string[];
   selectedName: string | null;
   name: string;
 }
@@ -26,10 +30,14 @@ class Users extends React.Component<IUsersProps, IUsersState> {
   constructor(props: IUsersProps) {
     super(props);
     this.state = {
-      users: this.props.users,
+      //users: this.props.users,
       selectedName: null,
       name: ""
     };
+  }
+
+  componentDidMount() {
+    this.props.getUsers()
   }
 
   selectUser = (name: string): void => {
@@ -37,7 +45,8 @@ class Users extends React.Component<IUsersProps, IUsersState> {
   };
 
   handleSubmit = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    this.setState({ users: [...this.state.users, this.state.name] });
+    this.props.addUser(this.state.name)
+    //this.setState({ users: [...this.state.users, this.state.name] });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -64,7 +73,7 @@ class Users extends React.Component<IUsersProps, IUsersState> {
           }}
         </MyContext.Consumer>
         <UsersList
-          users={this.state.users}
+          users={this.props.users}
           selectUser={this.selectUser}
           selectedName={this.state.selectedName}
         />
@@ -77,4 +86,11 @@ const mapStateToProps = (state: RootState) => {
   return { users: state.users };
 };
 
-export default connect(mapStateToProps)(Users);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { 
+    addUser: (user: UserType) => dispatch<addUserAction>(addUser(user)),
+    getUsers: () => dispatch(getUsers() as any),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
