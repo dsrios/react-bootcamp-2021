@@ -1,9 +1,6 @@
 import React from "react";
-import { Provider } from "react-redux";
 
-import store from "./store";
-
-import { MyContext } from "./enhancers/AuthContext";
+//import { MyContext } from "./enhancers/AuthContext";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import VpnKey from "@material-ui/icons/VpnKey";
@@ -35,7 +32,7 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
 
   render() {
     return (
-      <Provider store={store}>
+      <React.Fragment>
         <BottomNavigation
           value={this.state.currentTab}
           onChange={(event, tabIndex) => this.handleTabChange(tabIndex)}
@@ -50,7 +47,7 @@ export default class AppLifeCycle extends React.Component<{}, AppState> {
         {this.state.currentTab === 1 && <Counter />}
         {this.state.currentTab === 2 && <Users />}
         {this.state.currentTab === 3 && <Login />}
-      </Provider>
+      </React.Fragment>
     );
   }
 }

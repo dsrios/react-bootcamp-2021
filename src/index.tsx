@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AppHooks from "./AppHooks";
+import { Provider } from "react-redux";
+import store from "./store"
+
+
 import AppLifeCycle from "./AppLifeCycle";
+import AppHooks from "./AppHooks";
 import * as serviceWorker from "./serviceWorker";
 
 import { makeStyles, Theme } from "@material-ui/core/styles";
@@ -56,25 +60,27 @@ const App = (): JSX.Element => {
   };
 
   return (
-    <div className={classes.root}>
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="apps"
-        className={classes.tabs}
-      >
-        <Tab label="LifeCycle" {...a11yProps(0)} />
-        <Tab label="Hooks" {...a11yProps(1)} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <AppLifeCycle />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <AppHooks />
-      </TabPanel>
-    </div>
+    <Provider store={store}>
+      <div className={classes.root}>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="apps"
+          className={classes.tabs}
+        >
+          <Tab label="LifeCycle" {...a11yProps(0)} />
+          <Tab label="Hooks" {...a11yProps(1)} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <AppLifeCycle />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <AppHooks />
+        </TabPanel>
+        </div>
+      </Provider>
   );
 };
 

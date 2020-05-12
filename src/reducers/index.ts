@@ -1,7 +1,7 @@
-import { ADD_USER } from "./../actions/actionTypes";
-import { AnyAction } from "redux";
+import { ActionTypes } from "./../actions/actionTypes";
+import { addUserAction, fetchUsersAction } from "./../actions";
 
-const USERS = [
+/* const USERS = [
   "Michael",
   "Lindsay",
   "Tobias",
@@ -40,10 +40,10 @@ const USERS = [
   "Nathan",
   "Otto",
   "Paul"
-];
+]; */
 
 const initialState = {
-  users: USERS
+  users: []
 };
 
 export type RootState = {
@@ -51,16 +51,17 @@ export type RootState = {
 };
 
 export function rootReducer(
-  state: RootState = initialState,
-  action: AnyAction
-) {
+  state: RootState  = initialState,
+  action: addUserAction | fetchUsersAction
+) : RootState {
   switch (action.type) {
-    case ADD_USER:
+    case ActionTypes.ADD_USER:
       /*      return Object.assign({}, state, {
         users: state.users.concat(action.payload)
       }); */
       return { ...state, users: [...state.users, action.payload] };
-
+      case ActionTypes.FETCH_USERS:
+        return { ...state, users: action.payload };
     default:
       return state;
   }

@@ -6,6 +6,6 @@ type ContextProps = {
 };
 
 export const MyContext = React.createContext<ContextProps>({
-  isLoggedIn: null,
-  token: null
+  isLoggedIn: true,
+  token: ''
 });
